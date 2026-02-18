@@ -1,1616 +1,715 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tower of Bedrock - Minecraft MMORPG</title>
-    <meta name="description"
-        content="Join Tower of Bedrock, the ultimate Minecraft MMORPG. Conquer floors, forge gear, raid with friends, and climb the ranks in an epic adventure!">
-    <meta name="keywords"
-        content="Minecraft MMORPG, Tower of Bedrock, Minecraft adventure, RPG server, multiplayer Minecraft, Minecraft floors, raiding, guilds">
-    <meta name="author" content="Tower of Bedrock Team">
-    <meta name="robots" content="index, follow">
-
-    <!-- Open Graph Tags for Social Media -->
-    <meta property="og:title" content="Tower of Bedrock - Minecraft MMORPG">
-    <meta property="og:description"
-        content="Unleash your adventure in Tower of Bedrock, a Minecraft MMORPG with towering floors, epic gear, and thrilling raids. Join now!">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.towerofbedrock.com">
-    <meta property="og:image" content="https://www.towerofbedrock.com/images/meta-img.png">
-    <meta property="og:site_name" content="Tower of Bedrock">
-
-    <!-- Twitter Card Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Tower of Bedrock - Minecraft MMORPG">
-    <meta name="twitter:description"
-        content="Explore Tower of Bedrock, the ultimate Minecraft MMORPG with floors, raids, and guilds. Start your journey today!">
-    <meta name="twitter:image" content="https://www.towerofbedrock.com/images/meta-img.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&family=Montserrat:wght@300;600&family=Orbitron:wght@400;700&display=swap"
-        rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: #1e1e2f;
-            color: #e0e0e0;
-            font-family: 'Montserrat', sans-serif;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        ::selection {
-            background: #ff4081;
-            color: #fff;
-        }
-
-        /* Animations */
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes bannerSlide {
-            0% {
-                transform: translateX(0);
-            }
-
-            100% {
-                transform: translateX(-50%);
-            }
-        }
-
-        @keyframes bannerFade {
-            0% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-            100% {
-                opacity: 0;
-                transform: translateY(-100%);
-            }
-        }
-
-        @keyframes countdownSlide {
-            0% {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-
-            100% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes copyTick {
-            0% {
-                opacity: 0;
-                transform: scale(0.5) rotate(0deg);
-            }
-
-            50% {
-                opacity: 1;
-                transform: scale(1.2) rotate(10deg);
-            }
-
-            100% {
-                opacity: 1;
-                transform: scale(1) rotate(0deg);
-            }
-        }
-
-        /* Fade-up Animation for All Elements */
-        section.active .container>*,
-        section.active .container .wiki-grid>*,
-        section.active .container .store-grid>*,
-        section.active .container .forum-list>* {
-            animation: fadeUp 0.5s ease-out forwards;
-        }
-
-        /* Banner Container (for background fix) */
-        .banner-container {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            height: 40px;
-            background: rgba(30, 30, 50, 0.95);
-            /* Matches navbar */
-            z-index: 1001;
-            transition: top 0.3s ease;
-        }
-
-        .banner-container.scrolled {
-            top: -40px;
-            /* Moves up when banner hides */
-        }
-
-        /* Banner */
-        .banner {
-            position: absolute;
-            top: 0;
-            width: 100%;
-            height: 40px;
-            background: rgba(255, 64, 129, 0.2);
-            z-index: 1002;
-            /* Above container */
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-        .banner.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .banner.hidden {
-            opacity: 0;
-            transform: translateY(-100%);
-        }
-
-        .banner .ticker {
-            display: inline-block;
-            white-space: nowrap;
-            animation: bannerSlide 30s linear infinite;
-            /* Increased duration for smoothness */
-        }
-
-        .banner .ticker span {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(1em, 2vw, 1.2em);
-            font-weight: 700;
-            color: #ff4081;
-            margin: 0 clamp(30px, 5vw, 50px);
-            text-transform: uppercase;
-        }
-
-        /* Navbar */
-        .navbar {
-            position: fixed;
-            top: 40px;
-            /* Below banner when visible */
-            width: 100%;
-            padding: 10px 20px;
-            background: rgba(30, 30, 50, 0.95);
-            border-bottom: 2px solid #ff4081;
-            z-index: 1000;
-            text-align: center;
-            transition: top 0.3s ease;
-        }
-
-        .navbar.scrolled {
-            top: 0;
-            /* Moves up when banner hides */
-        }
-
-        .navbar .logo {
-            font-family: 'Press Start 2P', cursive;
-            font-size: clamp(1.2em, 3.5vw, 1.8em);
-            /* Slightly smaller max */
-            color: #ff4081;
-            text-transform: uppercase;
-            display: block;
-            margin-bottom: 10px;
-            white-space: nowrap;
-            /* Keeps it on one line */
-        }
-
-        .nav-links {
-            display: flex;
-            justify-content: center;
-            gap: clamp(15px, 3vw, 30px);
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: #e0e0e0;
-            text-decoration: none;
-            font-family: 'Roboto', sans-serif;
-            font-size: clamp(0.9em, 2vw, 1.1em);
-            font-weight: 600;
-            text-transform: uppercase;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: #ff4081;
-        }
-
-        /* Sections */
-        section {
-            display: none;
-            padding: 180px 20px 60px;
-            /* Increased top padding for banner + navbar */
-            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMjHxIGmVAAAAMElEQVQYV2NgoBJwcnJyanJycvL///8/AQwMTEwsLCwsLCwsLCwsLCwsLCwsLCwsDI4GAV8HAFrpV3gAAAAASUVORK5CYII=') repeat;
-            background-size: 16px 16px;
-            min-height: 100vh;
-        }
-
-        section.active {
-            display: block;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 clamp(20px, 5vw, 50px);
-        }
-
-        h1,
-        h2 {
-            font-family: 'Press Start 2P', cursive;
-            color: #ff4081;
-            text-transform: uppercase;
-        }
-
-        h1 {
-            font-size: clamp(2em, 6vw, 3em);
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        h2 {
-            font-size: clamp(1.4em, 4vw, 1.8em);
-            margin-bottom: 20px;
-        }
-
-        p {
-            font-family: 'Montserrat', sans-serif;
-            font-size: clamp(1em, 2.5vw, 1.1em);
-            color: #e0e0e0;
-        }
-
-        /* Home */
-        #home .hero-section {
-            background: radial-gradient(circle, rgba(255, 64, 129, 0.2) 0%, transparent 100%);
-            padding: 40px;
-            border-radius: 15px;
-            border: 2px solid rgba(255, 64, 129, 0.4);
-            text-align: center;
-            margin-bottom: 60px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        #home .hero-section::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 64, 129, 0.2) 0%, transparent 70%);
-            z-index: -1;
-        }
-
-        #home .hero-section h2 {
-            font-size: clamp(1.5em, 4.5vw, 2.5em);
-            /* Adjusted for mobile */
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px rgba(255, 64, 129, 0.5);
-            word-wrap: break-word;
-            white-space: normal;
-            /* Allows controlled line breaks */
-        }
-
-        #home .hero-section p {
-            font-size: clamp(1em, 2.8vw, 1.6em);
-            /* Slightly smaller */
-            color: #b0b0c0;
-            margin-bottom: 30px;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            word-wrap: break-word;
-        }
-
-        #home .hero-section .server-ip {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255, 64, 129, 0.3);
-            padding: clamp(8px, 1.5vw, 12px) clamp(15px, 2.5vw, 25px);
-            /* Adjusted padding */
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background 0.3s, transform 0.3s;
-            position: relative;
-            font-size: clamp(0.9em, 2vw, 1.4em);
-            /* Slightly smaller */
-            max-width: 90%;
-            /* Prevents overflow */
-            margin: 0 auto;
-            /* Centers properly */
-        }
-
-        #home .hero-section .server-ip:hover {
-            background: rgba(255, 64, 129, 0.5);
-            transform: scale(1.05);
-        }
-
-        #home .hero-section .server-ip span {
-            font-family: 'Roboto', sans-serif;
-            color: #ff4081;
-        }
-
-        #home .hero-section .server-ip i {
-            color: #ff4081;
-            font-size: clamp(1em, 2vw, 1.2em);
-            transition: opacity 0.3s, transform 0.3s;
-        }
-
-        #home .hero-section .server-ip.copied i.fa-copy {
-            opacity: 0;
-            transform: scale(0);
-        }
-
-        #home .hero-section .server-ip .tick {
-            position: absolute;
-            color: #ff4081;
-            font-size: clamp(1em, 2vw, 1.2em);
-            opacity: 0;
-            top: 50%;
-            right: clamp(10px, 1.5vw, 15px);
-            /* Adjusted for balance */
-            transform: translateY(-50%);
-        }
-
-        #home .hero-section .server-ip.copied .tick {
-            opacity: 1;
-            animation: copyTick 0.5s ease-out forwards;
-        }
-
-        #home .events-section {
-            background: rgba(40, 40, 60, 0.9);
-            padding: 30px;
-            border-radius: 15px;
-            border: 2px solid rgba(255, 64, 129, 0.4);
-            text-align: center;
-            margin-bottom: 60px;
-            box-shadow: inset 0 0 20px rgba(255, 64, 129, 0.1);
-        }
-
-        #home .events-section h2 {
-            margin-bottom: 30px;
-            text-shadow: 0 0 5px rgba(255, 64, 129, 0.3);
-        }
-
-        #home .events-section .events-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-
-        #home .events-section .event-item {
-            background: rgba(50, 50, 70, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 64, 129, 0.2);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-
-        #home .events-section .event-item:hover {
-            transform: scale(1.05) rotateX(5deg) rotateY(5deg);
-        }
-
-        #home .events-section .event-item i {
-            font-size: clamp(2.5em, 5vw, 3em);
-            color: #ff4081;
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px rgba(255, 64, 129, 0.3);
-        }
-
-        #home .events-section .event-item h3 {
-            font-family: 'Roboto', sans-serif;
-            font-size: clamp(1.2em, 3vw, 1.4em);
-            color: #ff4081;
-            margin-bottom: 15px;
-        }
-
-        #home .events-section .event-item .countdown {
-            font-size: clamp(0.9em, 2vw, 1em);
-            color: #e0e0e0;
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-            overflow: hidden;
-            height: 1.5em;
-            /* Fixed height to clip animation */
-            position: relative;
-        }
-
-        #home .events-section .event-item .countdown span {
-            background: rgba(255, 64, 129, 0.2);
-            padding: 0px 3px;
-            border-radius: 5px;
-            min-width: 40px;
-            text-align: center;
-            overflow: hidden;
-            position: relative;
-            height: 100%;
-        }
-
-        #home .events-section .event-item .countdown span.update {
-            animation: countdownSlide 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            /* Good easing */
-        }
-
-        #home .changelog-title {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        #home .changelog-title h1 {
-            font-size: clamp(1.8em, 5vw, 3em);
-            /* Adjusted for mobile */
-        }
-
-        #home .changelog-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(40, 40, 60, 0.9);
-            padding: 15px 20px;
-            border-radius: 10px 10px 0 0;
-            border: 1px solid rgba(255, 64, 129, 0.3);
-            border-bottom: none;
-        }
-
-        #home .changelog-header h2 {
-            margin: 0;
-        }
-
-        #home .changelog-list {
-            background: rgba(40, 40, 60, 0.9);
-            border: 1px solid rgba(255, 64, 129, 0.3);
-            border-top: none;
-            border-radius: 0 0 10px 10px;
-            overflow: hidden;
-        }
-
-        #home .changelog-entry {
-            padding: 15px 20px;
-            border-bottom: 1px solid rgba(255, 64, 129, 0.2);
-            transition: background 0.3s, transform 0.3s;
-            cursor: pointer;
-        }
-
-        #home .changelog-entry:hover {
-            background: rgba(50, 50, 70, 0.9);
-            transform: translateX(5px);
-        }
-
-        #home .changelog-entry:last-child {
-            border-bottom: none;
-        }
-
-        #home .changelog-entry h3 {
-            font-family: 'Roboto', sans-serif;
-            font-size: clamp(1.2em, 3vw, 1.5em);
-            color: #ff4081;
-            margin-bottom: 10px;
-        }
-
-        #home .changelog-entry p {
-            font-size: clamp(0.9em, 2vw, 1em);
-            color: #b0b0c0;
-            margin-bottom: 10px;
-        }
-
-        #home .changelog-entry .read-more {
-            color: #ff4081;
-            font-family: 'Roboto', sans-serif;
-            font-size: clamp(0.8em, 2vw, 0.9em);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        #home .changelog-entry .read-more:hover {
-            color: #e03570;
-        }
-
-        /* Forums */
-        #forums .container {
-            max-width: 1200px;
-        }
-
-        #forums .forum-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(40, 40, 60, 0.9);
-            padding: 15px 20px;
-            border-radius: 10px 10px 0 0;
-            border: 1px solid rgba(255, 64, 129, 0.3);
-            border-bottom: none;
-        }
-
-        #forums .forum-header h2 {
-            margin: 0;
-            font-size: clamp(1.2em, 3vw, 1.8em);
-        }
-
-        #forums .forum-header .stats {
-            font-family: 'Montserrat', sans-serif;
-            font-size: clamp(0.8em, 2vw, 0.9em);
-            color: #b0b0c0;
-        }
-
-        #forums .forum-list {
-            background: rgba(40, 40, 60, 0.9);
-            border: 1px solid rgba(255, 64, 129, 0.3);
-            border-top: none;
-            border-radius: 0 0 10px 10px;
-            overflow: hidden;
-        }
-
-        #forums .forum-thread {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            border-bottom: 1px solid rgba(255, 64, 129, 0.2);
-            transition: background 0.3s, transform 0.3s;
-            cursor: pointer;
-        }
-
-        #forums .forum-thread:hover {
-            background: rgba(50, 50, 70, 0.9);
-            transform: translateX(5px);
-        }
-
-        #forums .forum-thread:last-child {
-            border-bottom: none;
-        }
-
-        #forums .thread-info h3 {
-            font-family: 'Roboto', sans-serif;
-            font-size: clamp(1em, 2.5vw, 1.2em);
-            color: #ff4081;
-            margin-bottom: 5px;
-            word-wrap: break-word;
-        }
-
-        #forums .thread-info p {
-            font-size: clamp(0.8em, 2vw, 0.9em);
-            color: #b0b0c0;
-            word-wrap: break-word;
-        }
-
-        #forums .thread-stats {
-            text-align: right;
-            font-family: 'Montserrat', sans-serif;
-            font-size: clamp(0.8em, 2vw, 0.9em);
-            color: #e0e0e0;
-        }
-
-        #forums .thread-stats span {
-            display: block;
-            color: #b0b0c0;
-        }
-
-        /* Wiki */
-        #wiki .main-wiki {
-            display: block;
-        }
-
-        #wiki .main-wiki.active {
-            display: block;
-        }
-
-        #wiki .wiki-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 25px;
-        }
-
-        #wiki .wiki-item {
-            background: rgba(40, 40, 60, 0.9);
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 64, 129, 0.3);
-            transition: transform 0.3s, background 0.3s;
-            cursor: pointer;
-            text-align: center;
-            aspect-ratio: 1 / 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #wiki .wiki-item:hover {
-            transform: translateY(-5px);
-            background: rgba(50, 50, 70, 0.9);
-        }
-
-        #wiki .wiki-item i {
-            font-size: clamp(2em, 10vw, 3em);
-            color: #ff4081;
-            margin-bottom: 10px;
-            line-height: 1;
-        }
-
-        #wiki .wiki-item h3 {
-            font-family: 'Roboto', sans-serif;
-            font-size: clamp(1em, 2.5vw, 1.2em);
-            color: #ff4081;
-            margin: 0;
-        }
-
-        #wiki .wiki-item p {
-            font-size: clamp(0.8em, 2vw, 0.9em);
-            color: #b0b0c0;
-            margin: 0;
-        }
-
-        #wiki .sub-wiki {
-            display: none;
-        }
-
-        #wiki .sub-wiki.active {
-            display: block;
-        }
-
-        #wiki .sub-wiki-content {
-            background: rgba(40, 40, 60, 0.9);
-            padding: 30px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 64, 129, 0.3);
-            position: relative;
-        }
-
-        #wiki .sub-wiki-content .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            background: rgba(255, 64, 129, 0.3);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 64, 129, 0.5);
-            transition: background 0.3s, transform 0.3s;
-            cursor: pointer;
-            margin-bottom: 20px;
-        }
-
-        #wiki .sub-wiki-content .back-btn:hover {
-            background: rgba(255, 64, 129, 0.5);
-            transform: scale(1.05);
-        }
-
-        #wiki .sub-wiki-content .back-btn i {
-            font-size: clamp(1em, 2vw, 1.2em);
-            color: #ff4081;
-        }
-
-        #wiki .sub-wiki-content .back-btn span {
-            font-family: 'Roboto', sans-serif;
-            font-size: clamp(0.9em, 2vw, 1em);
-            color: #ff4081;
-        }
-
-        #wiki .sub-wiki-content h3 {
-            font-family: 'Roboto', sans-serif;
-            font-size: clamp(1.4em, 3vw, 1.8em);
-            color: #ff4081;
-            margin-bottom: 20px;
-        }
-
-        #wiki .sub-wiki-content p {
-            font-size: clamp(0.9em, 2vw, 1.1em);
-            color: #e0e0e0;
-            margin-bottom: 15px;
-        }
-
-        /* Store */
-        #store .store-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        #store .store-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
-
-        #store .store-item {
-            background: rgba(40, 40, 60, 0.9);
-            padding: 20px;
-            border-radius: 15px;
-            border: 2px solid rgba(255, 64, 129, 0.4);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s;
-            min-height: 350px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-
-        #store .store-item:hover {
-            transform: translateY(-10px);
-        }
-
-        #store .store-item i.fa-gem {
-            font-size: clamp(2.5em, 6vw, 3em);
-            color: #ff4081;
-            margin-bottom: 10px;
-            transition: transform 0.3s;
-        }
-
-        #store .store-item:hover i.fa-gem {
-            transform: rotate(10deg) scale(1.05);
-        }
-
-        #store .store-item h3 {
-            font-family: 'Roboto', sans-serif;
-            font-size: clamp(1.2em, 3vw, 1.4em);
-            color: #ff4081;
-            margin-bottom: 10px;
-        }
-
-        #store .store-item p {
-            font-size: clamp(0.9em, 2vw, 1em);
-            color: #b0b0c0;
-            margin-bottom: 10px;
-        }
-
-        #store .store-item .price {
-            font-family: 'Roboto', sans-serif;
-            font-size: clamp(1.4em, 3vw, 1.6em);
-            color: #e0e0e0;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        #store .store-item button {
-            padding: clamp(10px, 2vw, 12px) clamp(25px, 4vw, 30px);
-            background: rgba(255, 64, 129, 0.3);
-            color: #ff4081;
-            border: 1px solid rgba(255, 64, 129, 0.5);
-            border-radius: 20px;
-            font-family: 'Roboto', sans-serif;
-            font-size: clamp(1em, 2.5vw, 1.2em);
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s, transform 0.3s;
-        }
-
-        #store .store-item button:hover {
-            background: rgba(255, 64, 129, 0.5);
-            transform: scale(1.05);
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 40px;
-            background: rgba(30, 30, 50, 0.95);
-            border-top: 2px solid #ff4081;
-            position: relative;
-            z-index: 1;
-        }
-
-        footer p {
-            font-family: 'Montserrat', sans-serif;
-            font-size: clamp(0.9em, 2vw, 1em);
-            color: #b0b0c0;
-        }
-
-        footer .socials {
-            margin-top: 20px;
-        }
-
-        footer .socials a {
-            color: #e0e0e0;
-            font-size: clamp(1.5em, 3vw, 1.8em);
-            margin: 0 15px;
-            transition: color 0.3s;
-        }
-
-        footer .socials a:hover {
-            color: #ff4081;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            #store .store-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            #home .events-section .events-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 10px 15px;
-            }
-
-            .nav-links {
-                gap: 10px;
-            }
-
-            #store .store-grid {
-                grid-template-columns: 1fr;
-            }
-
-            #home .events-section .events-grid {
-                grid-template-columns: 1fr;
-            }
-
-            #store .store-item {
-                min-height: 300px;
-                /* Further reduced for mobile */
-            }
-
-            #wiki .wiki-grid {
-                grid-template-columns: repeat(2, 1fr);
-                /* 2 columns on mobile */
-            }
-
-            #forums .forum-header {
-                flex-direction: column;
-                /* Stack vertically on mobile */
-                align-items: flex-start;
-            }
-
-            #forums .forum-header .stats {
-                margin-top: 5px;
-                /* Space below category text */
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary SEO Meta Tags -->
+  <title>Tower of Bedrock — Competitive MMORPG Prisons Server</title>
+  <meta name="title" content="Tower of Bedrock — Competitive MMORPG Prisons Server" />
+  <meta name="description" content="Tower of Bedrock is the ultimate competitive MMORPG Prisons Minecraft server. Mine, rank up, dominate. Join thousands of players on play.towerofbedrock.com and rise to the top of the tower." />
+  <meta name="keywords" content="Tower of Bedrock, Minecraft Prisons, MMORPG Prisons, competitive Minecraft, prison server, Minecraft server, mine rank up, best prison server 2025, play.towerofbedrock.com" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Tower of Bedrock" />
+  <meta name="theme-color" content="#1a1209" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://towerofbedrock.com/" />
+  <meta property="og:title" content="Tower of Bedrock — Competitive MMORPG Prisons Server" />
+  <meta property="og:description" content="The ultimate competitive MMORPG Prisons Minecraft experience. Mine, rank up, and dominate the leaderboard. Join now at play.towerofbedrock.com" />
+  <meta property="og:image" content="https://dunb17ur4ymx4.cloudfront.net/webstore/logos/7bff67922b4ba5fa78a75060b3bf568fb5531397.png" />
+  <meta property="og:site_name" content="Tower of Bedrock" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://towerofbedrock.com/" />
+  <meta name="twitter:title" content="Tower of Bedrock — Competitive MMORPG Prisons" />
+  <meta name="twitter:description" content="The ultimate competitive MMORPG Prisons Minecraft experience. Mine, rank up, and dominate. Join at play.towerofbedrock.com" />
+  <meta name="twitter:image" content="https://dunb17ur4ymx4.cloudfront.net/webstore/logos/7bff67922b4ba5fa78a75060b3bf568fb5531397.png" />
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://towerofbedrock.com/" />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "Tower of Bedrock",
+    "description": "Tower of Bedrock is a competitive MMORPG Prisons Minecraft server where players mine, rank up, and compete to dominate the leaderboard.",
+    "genre": "MMORPG, Prisons",
+    "url": "https://towerofbedrock.com",
+    "gamePlatform": "Minecraft Java Edition",
+    "offers": { "@type": "Offer", "url": "https://store.towerofbedrock.com" }
+  }
+  </script>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="https://dunb17ur4ymx4.cloudfront.net/webstore/logos/10c53f89bf13b8b6f8467ba23c7d1bb7d942b93d.png" />
+
+  <!-- Press Start 2P = the classic Minecraft-style pixel font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:        #f9a825;
+      --gold-bright: #ffe082;
+      --gold-shadow: #7a4a00;
+      --dirt:        #8B5E3C;
+      --dirt-dark:   #4a2e10;
+      --stone:       #6b6b6b;
+      --stone-dark:  #2c2c2c;
+      --obsidian:    #0d0a06;
+      --grass:       #5a8a2a;
+      --creeper:     #4CAF50;
+      --text:        #fffde7;
+      --text-dim:    #bcaa87;
+      --lava:        #e64a19;
+      --lava-bright: #ff8f00;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: 'Press Start 2P', monospace;
+      background: var(--obsidian);
+      color: var(--text);
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      image-rendering: pixelated;
+    }
+
+    /* ===================== BACKGROUND ===================== */
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    /* Dirt/stone tiled pixel background */
+    .bg-tiles {
+      position: absolute;
+      inset: 0;
+      background-color: #1a1209;
+      background-image:
+        /* big stone blocks grid */
+        linear-gradient(rgba(255,255,255,0.02) 2px, transparent 2px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 2px, transparent 2px),
+        /* subtle noise via repeating gradient */
+        repeating-linear-gradient(
+          45deg,
+          rgba(80,50,20,0.06) 0px, rgba(80,50,20,0.06) 4px,
+          transparent 4px, transparent 16px
+        );
+      background-size: 64px 64px, 64px 64px, 64px 64px;
+    }
+
+    /* Lava glow at bottom */
+    .bg-lava {
+      position: absolute;
+      bottom: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      height: 260px;
+      background: radial-gradient(ellipse at center bottom, rgba(230,74,25,0.28) 0%, rgba(255,143,0,0.10) 40%, transparent 70%);
+      animation: lava-pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes lava-pulse {
+      0%,100% { opacity: 0.8; }
+      50%      { opacity: 1; }
+    }
+
+    /* Golden shimmer at top */
+    .bg-sky {
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 220px;
+      background: radial-gradient(ellipse, rgba(249,168,37,0.12) 0%, transparent 70%);
+      animation: lava-pulse 4.5s ease-in-out infinite reverse;
+    }
+
+    /* Scanline overlay for extra retro feel */
+    .bg-scanlines {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0,0,0,0.08) 3px,
+        rgba(0,0,0,0.08) 4px
+      );
+      pointer-events: none;
+    }
+
+    .bg-vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.75) 100%);
+    }
+
+    /* Floating pixel particles */
+    .particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      image-rendering: pixelated;
+      opacity: 0;
+      animation: float-up var(--dur) linear var(--delay) infinite;
+    }
+    @keyframes float-up {
+      0%   { opacity: 0;   transform: translateY(0)      translateX(0); }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.6; }
+      100% { opacity: 0;   transform: translateY(-105vh) translateX(var(--drift)); }
+    }
+
+    /* ===================== CONTENT ===================== */
+    .content {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 860px;
+      padding: 0 24px;
+      gap: 0;
+    }
+
+    /* ---- LOGO IMAGE ---- */
+    .logo-img-wrap {
+      animation: pop-in 0.7s cubic-bezier(0.16,1,0.3,1) both;
+      margin-bottom: 6px;
+      filter: drop-shadow(0 6px 32px rgba(249,168,37,0.45)) drop-shadow(0 2px 0 rgba(0,0,0,0.9));
+    }
+
+    .logo-img-wrap img {
+      width: clamp(300px, 70vw, 620px);
+      height: auto;
+      display: block;
+      image-rendering: pixelated;
+    }
+
+    @keyframes pop-in {
+      from { opacity: 0; transform: scale(0.85) translateY(-12px); }
+      to   { opacity: 1; transform: scale(1)    translateY(0); }
+    }
+
+    /* ---- PIXEL DIVIDER ---- */
+    .px-divider {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      width: 100%;
+      max-width: 560px;
+      margin: 14px 0 18px;
+      animation: fade-in 1s ease both 0.35s;
+    }
+    .px-divider-block {
+      height: 4px;
+      flex: 1;
+    }
+    /* Dirt-coloured pixel strip */
+    .px-divider-block:nth-child(1) { background: #7a4a00; }
+    .px-divider-block:nth-child(2) { background: #a06020; }
+    .px-divider-block:nth-child(3) { background: #c07830; }
+    .px-divider-block:nth-child(4) { background: var(--gold); }
+    .px-divider-block:nth-child(5) { background: var(--gold-bright); }
+    .px-divider-diamond {
+      width: 16px; height: 16px;
+      background: var(--gold-bright);
+      transform: rotate(45deg);
+      margin: 0 8px;
+      box-shadow: 0 0 12px var(--gold), 2px 2px 0 var(--gold-shadow);
+      flex-shrink: 0;
+    }
+    .px-divider-block:nth-child(7) { background: var(--gold-bright); }
+    .px-divider-block:nth-child(8) { background: var(--gold); }
+    .px-divider-block:nth-child(9) { background: #c07830; }
+    .px-divider-block:nth-child(10){ background: #a06020; }
+    .px-divider-block:nth-child(11){ background: #7a4a00; }
+
+    /* ---- TAGLINE ---- */
+    .tagline {
+      font-size: clamp(6px, 1.2vw, 9px);
+      color: var(--text-dim);
+      text-align: center;
+      max-width: 560px;
+      line-height: 2.2;
+      letter-spacing: 0.05em;
+      margin-bottom: 22px;
+      animation: fade-in 1s ease both 0.5s;
+      /* Pixel-style text shadow = MC look */
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.9);
+    }
+
+    /* ---- IP CARD ---- */
+    .ip-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      /* Pixel-border style */
+      background: #1c1208;
+      border: 3px solid #5a3800;
+      outline: 3px solid #000;
+      box-shadow: inset 0 0 0 2px #8a6020, 4px 4px 0 #000;
+      padding: 12px 20px;
+      margin-bottom: 22px;
+      cursor: pointer;
+      transition: transform 0.1s, box-shadow 0.1s;
+      min-width: 340px;
+      animation: fade-in 1s ease both 0.6s;
+      image-rendering: pixelated;
+    }
+
+    .ip-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: inset 0 0 0 2px #c8a020, 6px 6px 0 #000;
+      border-color: var(--gold);
+    }
+
+    .ip-card:active {
+      transform: translate(2px, 2px);
+      box-shadow: inset 0 0 0 2px #8a6020, 2px 2px 0 #000;
+    }
+
+    /* Pixel crafting table icon */
+    .ip-icon-wrap {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 1px;
+    }
+    .ip-icon-wrap span {
+      display: block;
+      image-rendering: pixelated;
+    }
+
+    .ip-info { flex: 1; }
+    .ip-label {
+      display: block;
+      font-size: 7px;
+      color: var(--gold);
+      text-shadow: 1px 1px 0 #000;
+      margin-bottom: 6px;
+      letter-spacing: 0.1em;
+    }
+    .ip-address {
+      font-size: clamp(8px, 1.6vw, 11px);
+      color: var(--gold-bright);
+      text-shadow: 2px 2px 0 var(--gold-shadow), 3px 3px 0 #000;
+      letter-spacing: 0.05em;
+      display: block;
+    }
+    .ip-copy-hint {
+      display: block;
+      font-size: 6px;
+      color: var(--text-dim);
+      margin-top: 5px;
+      opacity: 0.6;
+      text-shadow: 1px 1px 0 #000;
+    }
+
+    .player-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding-left: 16px;
+      border-left: 3px solid #3a2500;
+    }
+    .player-dot {
+      width: 8px; height: 8px;
+      background: #4caf50;
+      box-shadow: 0 0 0 2px #000, 0 0 8px #4caf50;
+      animation: blink 1.5s step-end infinite;
+    }
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0; }
+    }
+    .player-count {
+      font-size: 18px;
+      color: #4caf50;
+      text-shadow: 2px 2px 0 #1b5e20, 3px 3px 0 #000;
+    }
+    .player-label {
+      font-size: 6px;
+      color: var(--text-dim);
+      text-shadow: 1px 1px 0 #000;
+      text-align: center;
+    }
+
+    /* ---- BUTTONS ---- */
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fade-up 0.9s cubic-bezier(0.16,1,0.3,1) both 0.7s;
+    }
+
+    /* Minecraft-style pixel button */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(7px, 1.2vw, 9px);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      /* Minecraft button look: raised border with highlight/shadow */
+      border: 3px solid #000;
+      box-shadow: inset -3px -3px 0 rgba(0,0,0,0.4), inset 3px 3px 0 rgba(255,255,255,0.2);
+      transition: transform 0.08s, box-shadow 0.08s, filter 0.08s;
+      image-rendering: pixelated;
+      position: relative;
+    }
+
+    .btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: inset 3px 3px 0 rgba(0,0,0,0.4), inset -1px -1px 0 rgba(255,255,255,0.1);
+    }
+
+    .btn-store {
+      background: linear-gradient(180deg, #c0392b 0%, #922b21 50%, #7b241c 100%);
+      color: #ffe0e0;
+      text-shadow: 2px 2px 0 #4a0e0a;
+    }
+    .btn-store:hover { filter: brightness(1.2); }
+
+    .btn-discord {
+      background: linear-gradient(180deg, #5865F2 0%, #404EBD 50%, #2f3799 100%);
+      color: #e8eaff;
+      text-shadow: 2px 2px 0 #1a1f6b;
+    }
+    .btn-discord:hover { filter: brightness(1.2); }
+
+    /* ---- FEATURES STRIP ---- */
+    .features {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-top: 22px;
+      animation: fade-in 1s ease both 1s;
+      background: #111008;
+      border: 3px solid #3a2800;
+      outline: 3px solid #000;
+      box-shadow: 3px 3px 0 #000;
+      padding: 10px 0;
+    }
+
+    .feat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 0 20px;
+    }
+    .feat-val {
+      font-size: clamp(10px, 2vw, 14px);
+      color: var(--gold-bright);
+      text-shadow: 2px 2px 0 var(--gold-shadow), 3px 3px 0 #000;
+    }
+    .feat-name {
+      font-size: 6px;
+      color: var(--text-dim);
+      text-shadow: 1px 1px 0 #000;
+    }
+    .feat-sep {
+      width: 3px;
+      height: 40px;
+      background: #3a2800;
+      box-shadow: 1px 0 0 #000;
+    }
+
+    /* ---- TOAST ---- */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(60px);
+      background: #1c3a1c;
+      border: 3px solid #4caf50;
+      outline: 3px solid #000;
+      box-shadow: 3px 3px 0 #000;
+      color: #a5d6a7;
+      padding: 10px 20px;
+      font-size: 8px;
+      text-shadow: 1px 1px 0 #000;
+      letter-spacing: 0.1em;
+      opacity: 0;
+      transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), opacity 0.3s;
+      pointer-events: none;
+      z-index: 100;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ---- CORNER PIXEL ORNAMENTS ---- */
+    .corner-px {
+      position: fixed;
+      width: 32px;
+      height: 32px;
+      display: grid;
+      grid-template-columns: repeat(4,8px);
+      grid-template-rows: repeat(4,8px);
+      opacity: 0.5;
+    }
+    .corner-px span { display: block; }
+    .corner-tl { top: 16px; left: 16px; }
+    .corner-tr { top: 16px; right: 16px; transform: scaleX(-1); }
+    .corner-bl { bottom: 16px; left: 16px; transform: scaleY(-1); }
+    .corner-br { bottom: 16px; right: 16px; transform: scale(-1,-1); }
+
+    /* ---- FOOTER ---- */
+    .footer {
+      position: fixed;
+      bottom: 12px;
+      font-size: 6px;
+      color: var(--text-dim);
+      opacity: 0.3;
+      text-shadow: 1px 1px 0 #000;
+      letter-spacing: 0.15em;
+    }
+
+    /* ---- ANIMS ---- */
+    @keyframes fade-in  { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fade-up  { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+    @media (max-width: 540px) {
+      .features { flex-wrap: wrap; }
+      .ip-card  { min-width: unset; width: 100%; }
+      .btn      { font-size: 7px; padding: 11px 14px; }
+      .feat-sep { display: none; }
+    }
+  </style>
 </head>
-
 <body>
-    <div class="banner-container">
-        <div class="banner visible">
-            <div class="ticker">
-                <span>DOUBLE EXP WEEKEND</span>
-                <span>THE OUTPOST UPDATE</span>
-                <span>20% GEM SALE</span>
-                <span>DOUBLE EXP WEEKEND</span>
-                <span>THE OUTPOST UPDATE</span>
-                <span>20% GEM SALE</span>
-                <span>DOUBLE EXP WEEKEND</span>
-                <span>THE OUTPOST UPDATE</span>
-                <span>20% GEM SALE</span>
-            </div>
-        </div>
+
+  <!-- BG -->
+  <div class="bg">
+    <div class="bg-tiles"></div>
+    <div class="bg-sky"></div>
+    <div class="bg-lava"></div>
+    <div class="bg-scanlines"></div>
+    <div class="bg-vignette"></div>
+    <div class="particles" id="particles"></div>
+  </div>
+
+  <!-- Pixel corner ornaments -->
+  <div class="corner-px corner-tl" aria-hidden="true">
+    <span style="background:#c8a020"></span><span></span><span></span><span></span>
+    <span style="background:#c8a020"></span><span></span><span></span><span></span>
+    <span style="background:#c8a020"></span><span></span><span></span><span></span>
+    <span style="background:#c8a020"></span><span style="background:#c8a020"></span><span style="background:#c8a020"></span><span style="background:#c8a020"></span>
+  </div>
+  <div class="corner-px corner-tr" aria-hidden="true">
+    <span style="background:#c8a020"></span><span></span><span></span><span></span>
+    <span style="background:#c8a020"></span><span></span><span></span><span></span>
+    <span style="background:#c8a020"></span><span></span><span></span><span></span>
+    <span style="background:#c8a020"></span><span style="background:#c8a020"></span><span style="background:#c8a020"></span><span style="background:#c8a020"></span>
+  </div>
+  <div class="corner-px corner-bl" aria-hidden="true">
+    <span style="background:#c8a020"></span><span></span><span></span><span></span>
+    <span style="background:#c8a020"></span><span></span><span></span><span></span>
+    <span style="background:#c8a020"></span><span></span><span></span><span></span>
+    <span style="background:#c8a020"></span><span style="background:#c8a020"></span><span style="background:#c8a020"></span><span style="background:#c8a020"></span>
+  </div>
+  <div class="corner-px corner-br" aria-hidden="true">
+    <span style="background:#c8a020"></span><span></span><span></span><span></span>
+    <span style="background:#c8a020"></span><span></span><span></span><span></span>
+    <span style="background:#c8a020"></span><span></span><span></span><span></span>
+    <span style="background:#c8a020"></span><span style="background:#c8a020"></span><span style="background:#c8a020"></span><span style="background:#c8a020"></span>
+  </div>
+
+  <!-- MAIN -->
+  <main class="content" role="main">
+
+    <!-- LOGO IMAGE -->
+    <div class="logo-img-wrap">
+      <img
+        src="https://dunb17ur4ymx4.cloudfront.net/webstore/logos/7bff67922b4ba5fa78a75060b3bf568fb5531397.png"
+        alt="Tower of Bedrock — Competitive MMORPG Prisons"
+        width="620"
+        height="auto"
+      />
     </div>
 
-    <nav class="navbar">
-        <h1 class="logo">Tower of Bedrock</h1>
-        <ul class="nav-links">
-            <li><a href="#home" class="active">Home</a></li>
-            <li><a href="#forums">Forums</a></li>
-            <li><a href="#wiki">Wiki</a></li>
-            <li><a href="#store">Store</a></li>
-        </ul>
-    </nav>
+    <!-- Pixel divider -->
+    <div class="px-divider" aria-hidden="true">
+      <div class="px-divider-block"></div>
+      <div class="px-divider-block"></div>
+      <div class="px-divider-block"></div>
+      <div class="px-divider-block"></div>
+      <div class="px-divider-block"></div>
+      <div class="px-divider-diamond"></div>
+      <div class="px-divider-block"></div>
+      <div class="px-divider-block"></div>
+      <div class="px-divider-block"></div>
+      <div class="px-divider-block"></div>
+      <div class="px-divider-block"></div>
+    </div>
 
-    <section id="home" class="active">
-        <div class="container">
-            <div class="hero-section">
-                <h2>JOIN THE JOURNEY</h2>
-                <p>Unleash your adventure in the ultimate Minecraft MMORPG—conquer towering floors, forge epic gear, and
-                    raid with your crew!</p>
-                <div class="server-ip" onclick="copyIP(this)">
-                    <span>play.towerofbedrock.com</span>
-                    <i class="fas fa-copy"></i>
-                    <i class="fas fa-check tick"></i>
-                </div>
-            </div>
-            <div class="events-section">
-                <h2>Featured Events</h2>
-                <div class="events-grid">
-                    <div class="event-item">
-                        <i class="fas fa-star"></i>
-                        <h3>Double EXP Weekend</h3>
-                        <div class="countdown" id="double-exp-countdown">
-                            <span class="label">Ends in:</span>
-                            <span class="hours">37</span>:<span class="minutes">00</span>:<span
-                                class="seconds">00</span>
-                        </div>
-                    </div>
-                    <div class="event-item">
-                        <i class="fas fa-flag-checkered"></i>
-                        <h3>Outpost Siege</h3>
-                        <div class="countdown" id="outpost-countdown">
-                            <span class="label">Starts in:</span>
-                            <span class="hours">06</span>:<span class="minutes">00</span>:<span
-                                class="seconds">00</span>
-                        </div>
-                    </div>
-                    <div class="event-item">
-                        <i class="fas fa-gem"></i>
-                        <h3>Gem Sale</h3>
-                        <div class="countdown" id="gem-sale-countdown">
-                            <span class="label">Ends in:</span>
-                            <span class="hours">48</span>:<span class="minutes">00</span>:<span
-                                class="seconds">00</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="changelog-title">
-                <h1>Recent Changelogs</h1>
-            </div>
-            <div class="changelog-header">
-                <h2>Latest Updates</h2>
-            </div>
-            <div class="changelog-list">
-                <div class="changelog-entry">
-                    <h3>Patch 1.3 - "Floor 7 Unleashed"</h3>
-                    <p><strong>Date:</strong> Feb 27, 2025</p>
-                    <p>- Introduced Floor 7 with "Nether Wraith" mobs.</p>
-                    <p>- Added "Blaze Strike" enchantment.</p>
-                    <a href="#" class="read-more">Read More</a>
-                </div>
-                <div class="changelog-entry">
-                    <h3>Patch 1.2 - "Guild Wars"</h3>
-                    <p><strong>Date:</strong> Feb 20, 2025</p>
-                    <p>- Guild overhaul with shared vaults.</p>
-                    <p>- Outposts added for rare drops.</p>
-                    <a href="#" class="read-more">Read More</a>
-                </div>
-                <div class="changelog-entry">
-                    <h3>Patch 1.1 - "Energy Boost"</h3>
-                    <p><strong>Date:</strong> Feb 15, 2025</p>
-                    <p>- Energy Bar cap raised to 5000.</p>
-                    <p>- New "Gem Pickaxe" item.</p>
-                    <a href="#" class="read-more">Read More</a>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- Tagline -->
+    <p class="tagline">Mine deep. Rank up. Dominate the tower.<br>The most competitive MMORPG Prisons server in Minecraft.</p>
 
-    <section id="forums">
-        <div class="container">
-            <h1>Forums</h1>
-            <div class="forum-header">
-                <h2>General Discussion</h2>
-                <div class="stats">Threads: 1,245 | Posts: 12,890</div>
-            </div>
-            <div class="forum-list">
-                <div class="forum-thread">
-                    <div class="thread-info">
-                        <h3>Welcome to Tower of Bedrock!</h3>
-                        <p>By Admin | Started: Feb 27, 2025</p>
-                    </div>
-                    <div class="thread-stats">
-                        <span>Replies: 342</span>
-                        <span>Views: 15.2K</span>
-                    </div>
-                </div>
-                <div class="forum-thread">
-                    <div class="thread-info">
-                        <h3>Best Vault Defense Strategies</h3>
-                        <p>By MinerX | Started: Feb 26, 2025</p>
-                    </div>
-                    <div class="thread-stats">
-                        <span>Replies: 89</span>
-                        <span>Views: 4.7K</span>
-                    </div>
-                </div>
-                <div class="forum-thread">
-                    <div class="thread-info">
-                        <h3>Upcoming Floor 7 Reveal</h3>
-                        <p>By DevTeam | Started: Feb 25, 2025</p>
-                    </div>
-                    <div class="thread-stats">
-                        <span>Replies: 210</span>
-                        <span>Views: 9.8K</span>
-                    </div>
-                </div>
-            </div>
-            <div class="forum-header" style="margin-top: 40px;">
-                <h2>Guild Recruitment</h2>
-                <div class="stats">Threads: 678 | Posts: 5,432</div>
-            </div>
-            <div class="forum-list">
-                <div class="forum-thread">
-                    <div class="thread-info">
-                        <h3>Looking for Raiders - Lvl 50+</h3>
-                        <p>By GuildMasterZ | Started: Feb 26, 2025</p>
-                    </div>
-                    <div class="thread-stats">
-                        <span>Replies: 45</span>
-                        <span>Views: 2.1K</span>
-                    </div>
-                </div>
-                <div class="forum-thread">
-                    <div class="thread-info">
-                        <h3>New Guild: Bedrock Legends</h3>
-                        <p>By Legend27 | Started: Feb 25, 2025</p>
-                    </div>
-                    <div class="thread-stats">
-                        <span>Replies: 32</span>
-                        <span>Views: 1.8K</span>
-                    </div>
-                </div>
-            </div>
-            <div class="forum-header" style="margin-top: 40px;">
-                <h2>Guides & Strategies</h2>
-                <div class="stats">Threads: 892 | Posts: 7,654</div>
-            </div>
-            <div class="forum-list">
-                <div class="forum-thread">
-                    <div class="thread-info">
-                        <h3>Ultimate Fishing Guide</h3>
-                        <p>By FishMaster | Started: Feb 24, 2025</p>
-                    </div>
-                    <div class="thread-stats">
-                        <span>Replies: 67</span>
-                        <span>Views: 3.9K</span>
-                    </div>
-                </div>
-                <div class="forum-thread">
-                    <div class="thread-info">
-                        <h3>Best Enchanting Setups</h3>
-                        <p>By EnchanterX | Started: Feb 23, 2025</p>
-                    </div>
-                    <div class="thread-stats">
-                        <span>Replies: 54</span>
-                        <span>Views: 2.8K</span>
-                    </div>
-                </div>
-            </div>
-            <div class="forum-header" style="margin-top: 40px;">
-                <h2>Bug Reports</h2>
-                <div class="stats">Threads: 345 | Posts: 2,109</div>
-            </div>
-            <div class="forum-list">
-                <div class="forum-thread">
-                    <div class="thread-info">
-                        <h3>Generator Glitch on Floor 5</h3>
-                        <p>By BugHunter | Started: Feb 26, 2025</p>
-                    </div>
-                    <div class="thread-stats">
-                        <span>Replies: 23</span>
-                        <span>Views: 1.5K</span>
-                    </div>
-                </div>
-                <div class="forum-thread">
-                    <div class="thread-info">
-                        <h3>Pet Boost Not Applying</h3>
-                        <p>By PetLover | Started: Feb 25, 2025</p>
-                    </div>
-                    <div class="thread-stats">
-                        <span>Replies: 19</span>
-                        <span>Views: 1.2K</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- IP Card -->
+    <div class="ip-card" onclick="copyIP()" role="button" aria-label="Click to copy server IP: play.towerofbedrock.com" tabindex="0">
+      <!-- Pixel pickaxe icon made of coloured spans -->
+      <div class="ip-icon-wrap" aria-hidden="true">
+        <!-- Row 1 -->
+        <span style="background:transparent"></span>
+        <span style="background:#6d5c3e"></span>
+        <span style="background:#b8a080"></span>
+        <span style="background:#8a7060"></span>
+        <!-- Row 2 -->
+        <span style="background:#6d5c3e"></span>
+        <span style="background:#b8a080"></span>
+        <span style="background:#8a7060"></span>
+        <span style="background:transparent"></span>
+        <!-- Row 3 -->
+        <span style="background:transparent"></span>
+        <span style="background:#6d5c3e"></span>
+        <span style="background:transparent"></span>
+        <span style="background:transparent"></span>
+        <!-- Row 4 -->
+        <span style="background:transparent"></span>
+        <span style="background:transparent"></span>
+        <span style="background:#6d5c3e"></span>
+        <span style="background:transparent"></span>
+      </div>
 
-    <section id="wiki">
-        <div class="container">
-            <h1>Wiki</h1>
-            <div class="main-wiki active">
-                <div class="wiki-grid">
-                    <div class="wiki-item" onclick="showSubWiki('floors')">
-                        <i class="fas fa-layer-group"></i>
-                        <div>
-                            <h3>Floors</h3>
-                            <p>Unlock tiers</p>
-                        </div>
-                    </div>
-                    <div class="wiki-item" onclick="showSubWiki('progression')">
-                        <i class="fas fa-chart-line"></i>
-                        <div>
-                            <h3>Progression</h3>
-                            <p>Level up</p>
-                        </div>
-                    </div>
-                    <div class="wiki-item" onclick="showSubWiki('enchanting')">
-                        <i class="fas fa-magic"></i>
-                        <div>
-                            <h3>Enchanting</h3>
-                            <p>Power gear</p>
-                        </div>
-                    </div>
-                    <div class="wiki-item" onclick="showSubWiki('items')">
-                        <i class="fas fa-box-open"></i>
-                        <div>
-                            <h3>Items</h3>
-                            <p>New gear</p>
-                        </div>
-                    </div>
-                    <div class="wiki-item" onclick="showSubWiki('recipes')">
-                        <i class="fas fa-tools"></i>
-                        <div>
-                            <h3>Recipes</h3>
-                            <p>Craft items</p>
-                        </div>
-                    </div>
-                    <div class="wiki-item" onclick="showSubWiki('mobs')">
-                        <i class="fas fa-spider"></i>
-                        <div>
-                            <h3>Mobs</h3>
-                            <p>Fight enemies</p>
-                        </div>
-                    </div>
-                    <div class="wiki-item" onclick="showSubWiki('fishing')">
-                        <i class="fas fa-fish"></i>
-                        <div>
-                            <h3>Fishing</h3>
-                            <p>Catch loot</p>
-                        </div>
-                    </div>
-                    <div class="wiki-item" onclick="showSubWiki('vaults')">
-                        <i class="fas fa-lock"></i>
-                        <div>
-                            <h3>Vaults</h3>
-                            <p>Secure loot</p>
-                        </div>
-                    </div>
-                    <div class="wiki-item" onclick="showSubWiki('raiding')">
-                        <i class="fas fa-skull-crossbones"></i>
-                        <div>
-                            <h3>Raiding</h3>
-                            <p>Steal loot</p>
-                        </div>
-                    </div>
-                    <div class="wiki-item" onclick="showSubWiki('guilds')">
-                        <i class="fas fa-users"></i>
-                        <div>
-                            <h3>Guilds</h3>
-                            <p>Team up</p>
-                        </div>
-                    </div>
-                    <div class="wiki-item" onclick="showSubWiki('guards')">
-                        <i class="fas fa-shield-alt"></i>
-                        <div>
-                            <h3>Guards</h3>
-                            <p>Defend vaults</p>
-                        </div>
-                    </div>
-                    <div class="wiki-item" onclick="showSubWiki('generators')">
-                        <i class="fas fa-cogs"></i>
-                        <div>
-                            <h3>Generators</h3>
-                            <p>Auto-mine</p>
-                        </div>
-                    </div>
-                    <div class="wiki-item" onclick="showSubWiki('pets')">
-                        <i class="fas fa-paw"></i>
-                        <div>
-                            <h3>Pets</h3>
-                            <p>Get boosts</p>
-                        </div>
-                    </div>
-                    <div class="wiki-item" onclick="showSubWiki('leverages')">
-                        <i class="fas fa-arrow-up"></i>
-                        <div>
-                            <h3>Leverages</h3>
-                            <p>EXP boosts</p>
-                        </div>
-                    </div>
-                    <div class="wiki-item" onclick="showSubWiki('outposts')">
-                        <i class="fas fa-flag"></i>
-                        <div>
-                            <h3>Outposts</h3>
-                            <p>Guild battles</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="ip-info">
+        <span class="ip-label">&#9654; SERVER ADDRESS</span>
+        <span class="ip-address">play.towerofbedrock.com</span>
+        <span class="ip-copy-hint">[ CLICK TO COPY ]</span>
+      </div>
 
-            <!-- Sub-Wikis with Demo Text -->
-            <div id="floors" class="sub-wiki">
-                <div class="sub-wiki-content">
-                    <div class="back-btn" onclick="backToMainWiki(event)">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Back</span>
-                    </div>
-                    <h2>Floors</h2>
-                    <p>Explore over 10 floors, each unlocking new challenges and rewards as you ascend.</p>
-                    <h3>Unlocking</h3>
-                    <p>Reach level thresholds (e.g., Level 5 for Floor 2) or complete floor-specific quests.</p>
-                    <h3>Floor Examples</h3>
-                    <p>- <strong>Floor 1</strong>: Basic ores, common mobs.</p>
-                    <p>- <strong>Floor 5</strong>: Rare ores, Abyssal Golem spawns.</p>
-                </div>
-            </div>
-            <div id="progression" class="sub-wiki">
-                <div class="sub-wiki-content">
-                    <div class="back-btn" onclick="backToMainWiki(event)">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Back</span>
-                    </div>
-                    <h2>Progression</h2>
-                    <p>Level up through grinding to unlock new tiers and rewards.</p>
-                    <h3>Levels</h3>
-                    <p>Progress from Level 1 to 50, unlocking floors and items.</p>
-                    <h3>EXP Sources</h3>
-                    <p>Earn EXP from mining, fighting, and quests.</p>
-                </div>
-            </div>
-            <div id="enchanting" class="sub-wiki">
-                <div class="sub-wiki-content">
-                    <div class="back-btn" onclick="backToMainWiki(event)">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Back</span>
-                    </div>
-                    <h2>Enchanting (Energy)</h2>
-                    <p>Enhance gear with Energy-powered enchantments.</p>
-                    <h3>How It Works</h3>
-                    <p>Use Energy at an Altar to apply enchantments.</p>
-                    <h3>Examples</h3>
-                    <p>- <strong>Blaze Strike</strong>: Fire damage boost.</p>
-                </div>
-            </div>
-            <div id="items" class="sub-wiki">
-                <div class="sub-wiki-content">
-                    <div class="back-btn" onclick="backToMainWiki(event)">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Back</span>
-                    </div>
-                    <h2>Items</h2>
-                    <p>Discover custom items to boost your gameplay.</p>
-                    <h3>Variety</h3>
-                    <p>Includes weapons, tools, and trinkets.</p>
-                    <h3>Sources</h3>
-                    <p>Drops, crafting, and floor rewards.</p>
-                </div>
-            </div>
-            <div id="recipes" class="sub-wiki">
-                <div class="sub-wiki-content">
-                    <div class="back-btn" onclick="backToMainWiki(event)">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Back</span>
-                    </div>
-                    <h2>Recipes</h2>
-                    <p>Craft unique items with special recipes.</p>
-                    <h3>Crafting</h3>
-                    <p>Use the Forge with rare materials.</p>
-                    <h3>Examples</h3>
-                    <p>- <strong>Void Blade</strong>: 4 Obsidian + 2 Gems.</p>
-                </div>
-            </div>
-            <div id="mobs" class="sub-wiki">
-                <div class="sub-wiki-content">
-                    <div class="back-btn" onclick="backToMainWiki(event)">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Back</span>
-                    </div>
-                    <h2>Mobs</h2>
-                    <p>Battle custom mobs for unique drops.</p>
-                    <h3>Types</h3>
-                    <p>Features Abyssal Golems and more.</p>
-                    <h3>Drops</h3>
-                    <p>Includes cores and embers.</p>
-                </div>
-            </div>
-            <div id="fishing" class="sub-wiki">
-                <div class="sub-wiki-content">
-                    <div class="back-btn" onclick="backToMainWiki(event)">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Back</span>
-                    </div>
-                    <h2>Fishing</h2>
-                    <p>Fish for rare loot across floors.</p>
-                    <h3>Mechanics</h3>
-                    <p>Better rods improve catch rates.</p>
-                    <h3>Catches</h3>
-                    <p>From fish to relics.</p>
-                </div>
-            </div>
-            <div id="vaults" class="sub-wiki">
-                <div class="sub-wiki-content">
-                    <div class="back-btn" onclick="backToMainWiki(event)">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Back</span>
-                    </div>
-                    <h2>Vaults</h2>
-                    <p>Secure your loot in vaults.</p>
-                    <h3>Types</h3>
-                    <p>Small and large options available.</p>
-                    <h3>Raids</h3>
-                    <p>Defend against daily raids.</p>
-                </div>
-            </div>
-            <div id="raiding" class="sub-wiki">
-                <div class="sub-wiki-content">
-                    <div class="back-btn" onclick="backToMainWiki(event)">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Back</span>
-                    </div>
-                    <h2>Raiding</h2>
-                    <p>Raid others’ vaults for loot.</p>
-                    <h3>Execution</h3>
-                    <p>Defeat Guards within 10 minutes.</p>
-                    <h3>Risks</h3>
-                    <p>Lose gear if you fail.</p>
-                </div>
-            </div>
-            <div id="guilds" class="sub-wiki">
-                <div class="sub-wiki-content">
-                    <div class="back-btn" onclick="backToMainWiki(event)">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Back</span>
-                    </div>
-                    <h2>Guilds</h2>
-                    <p>Team up for shared benefits.</p>
-                    <h3>Creation</h3>
-                    <p>Start with coins and gems.</p>
-                    <h3>Benefits</h3>
-                    <p>Group raids and vaults.</p>
-                </div>
-            </div>
-            <div id="guards" class="sub-wiki">
-                <div class="sub-wiki-content">
-                    <div class="back-btn" onclick="backToMainWiki(event)">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Back</span>
-                    </div>
-                    <h2>Guards</h2>
-                    <p>Hire Guards to protect vaults.</p>
-                    <h3>Tiers</h3>
-                    <p>Basic and Elite options.</p>
-                    <h3>Placement</h3>
-                    <p>Up to 5 per vault.</p>
-                </div>
-            </div>
-            <div id="generators" class="sub-wiki">
-                <div class="sub-wiki-content">
-                    <div class="back-btn" onclick="backToMainWiki(event)">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Back</span>
-                    </div>
-                    <h2>Generators</h2>
-                    <p>Automate ore mining in vaults.</p>
-                    <h3>Fuel</h3>
-                    <p>Use coal or gems for power.</p>
-                    <h3>Output</h3>
-                    <p>Boosts ore production.</p>
-                </div>
-            </div>
-            <div id="pets" class="sub-wiki">
-                <div class="sub-wiki-content">
-                    <div class="back-btn" onclick="backToMainWiki(event)">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Back</span>
-                    </div>
-                    <h2>Pets</h2>
-                    <p>Gain boosts from companions.</p>
-                    <h3>Types</h3>
-                    <p>Wolves, dragons, and more.</p>
-                    <h3>Upgrades</h3>
-                    <p>Level up with gems.</p>
-                </div>
-            </div>
-            <div id="leverages" class="sub-wiki">
-                <div class="sub-wiki-content">
-                    <div class="back-btn" onclick="backToMainWiki(event)">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Back</span>
-                    </div>
-                    <h2>Leverages</h2>
-                    <p>Boost EXP with multipliers.</p>
-                    <h3>Mechanics</h3>
-                    <p>200% to 10%, resets daily.</p>
-                    <h3>Strategy</h3>
-                    <p>Maximize early grinding.</p>
-                </div>
-            </div>
-            <div id="outposts" class="sub-wiki">
-                <div class="sub-wiki-content">
-                    <div class="back-btn" onclick="backToMainWiki(event)">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Back</span>
-                    </div>
-                    <h2>Outposts</h2>
-                    <p>Fight for rare loot with guilds.</p>
-                    <h3>Control</h3>
-                    <p>Hold for an hour to claim.</p>
-                    <h3>Rewards</h3>
-                    <p>Rare ores and items.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+      <div class="player-badge">
+        <div class="player-dot"></div>
+        <span class="player-count" id="playerCount">—</span>
+        <span class="player-label">ONLINE</span>
+      </div>
+    </div>
 
-    <section id="store">
-        <div class="container">
-            <div class="store-header">
-                <h1>Store</h1>
-            </div>
-            <div class="store-grid">
-                <div class="store-item">
-                    <i class="fas fa-gem"></i>
-                    <h3>Starter Pack</h3>
-                    <p>Perfect for new adventurers! 100 Gems.</p>
-                    <div class="price">$4.99</div>
-                    <button onclick="alert('Purchase coming soon!')">Buy Now</button>
-                </div>
-                <div class="store-item">
-                    <i class="fas fa-gem"></i>
-                    <h3>Explorer’s Bundle</h3>
-                    <p>Boost your journey! 500 + 100 Gems.</p>
-                    <div class="price">$12.99</div>
-                    <button onclick="alert('Purchase coming soon!')">Buy Now</button>
-                </div>
-                <div class="store-item">
-                    <i class="fas fa-gem"></i>
-                    <h3>Warrior’s Hoard</h3>
-                    <p>Power up! 1200 + 300 Gems.</p>
-                    <div class="price">$34.99</div>
-                    <button onclick="alert('Purchase coming soon!')">Buy Now</button>
-                </div>
-                <div class="store-item">
-                    <i class="fas fa-gem"></i>
-                    <h3>Legend’s Vault</h3>
-                    <p>Dominate! 2500 + 700 Gems.</p>
-                    <div class="price">$64.99</div>
-                    <button onclick="alert('Purchase coming soon!')">Buy Now</button>
-                </div>
-                <div class="store-item">
-                    <i class="fas fa-gem"></i>
-                    <h3>Titan’s Treasure</h3>
-                    <p>Unleash power! 5000 + 1500 Gems.</p>
-                    <div class="price">$99.99</div>
-                    <button onclick="alert('Purchase coming soon!')">Buy Now</button>
-                </div>
-                <div class="store-item">
-                    <i class="fas fa-gem"></i>
-                    <h3>Overlord’s Cache</h3>
-                    <p>Rule all! 10000 + 3000 Gems.</p>
-                    <div class="price">$149.99</div>
-                    <button onclick="alert('Purchase coming soon!')">Buy Now</button>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- Buttons -->
+    <div class="btn-row">
+      <a href="https://store.towerofbedrock.com" class="btn btn-store" target="_blank" rel="noopener" aria-label="Open Tower of Bedrock Store">
+        &#9733; STORE
+      </a>
+      <a href="https://towerofbedrock.com/discord" class="btn btn-discord" target="_blank" rel="noopener" aria-label="Join Tower of Bedrock Discord">
+        &#9670; DISCORD
+      </a>
+    </div>
 
-    <footer>
-        <p>© 2025 Tower of Bedrock. Forge your path.</p>
-        <div class="socials">
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-discord"></i></a>
-            <a href="#"><i class="fab fa-youtube"></i></a>
-        </div>
-    </footer>
+    <!-- Features -->
+    <div class="features" aria-label="Server highlights">
+      <div class="feat">
+        <span class="feat-val">100+</span>
+        <span class="feat-name">MINE RANKS</span>
+      </div>
+      <div class="feat-sep"></div>
+      <div class="feat">
+        <span class="feat-val">RPG</span>
+        <span class="feat-name">SKILL TREES</span>
+      </div>
+      <div class="feat-sep"></div>
+      <div class="feat">
+        <span class="feat-val">PVP</span>
+        <span class="feat-name">COMBAT</span>
+      </div>
+      <div class="feat-sep"></div>
+      <div class="feat">
+        <span class="feat-val">24/7</span>
+        <span class="feat-name">UPTIME</span>
+      </div>
+    </div>
 
-    <script>
-        // Navigation with Scroll to Top
-        const navLinks = document.querySelectorAll('.nav-links a');
-        const sections = document.querySelectorAll('section');
-        const banner = document.querySelector('.banner');
-        const navbar = document.querySelector('.navbar');
-        const bannerContainer = document.querySelector('.banner-container');
+  </main>
 
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = link.getAttribute('href').substring(1);
-                sections.forEach(section => {
-                    section.classList.remove('active');
-                    if (section.id === targetId) {
-                        section.classList.add('active');
-                    }
-                });
-                navLinks.forEach(l => l.classList.remove('active'));
-                link.classList.add('active');
-                document.querySelectorAll('.sub-wiki').forEach(sub => sub.classList.remove('active'));
-                document.querySelector('#wiki .wiki-grid').style.display = 'grid';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-        });
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite">&#9670; IP COPIED!</div>
 
-        // Sub-Wiki Toggle with Forced Scroll to Top
-        function showSubWiki(id) {
-            document.querySelector('#wiki .wiki-grid').style.display = 'none';
-            document.querySelectorAll('.sub-wiki').forEach(sub => sub.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            setTimeout(() => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 10);
-        }
+  <!-- Footer -->
+  <footer class="footer">© 2026 TOWER OF BEDROCK — ALL RIGHTS RESERVED</footer>
 
-        function backToMainWiki(event) {
-            event.preventDefault();
-            document.querySelectorAll('.sub-wiki').forEach(sub => sub.classList.remove('active'));
-            document.querySelector('#wiki .wiki-grid').style.display = 'grid';
-            setTimeout(() => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 10);
-        }
+  <script>
+    // ---- PIXEL PARTICLES (lava + gold squares) ----
+    const container = document.getElementById('particles');
+    const colors = ['#f9a825','#ffe082','#e64a19','#ff8f00','#c8a020'];
+    for (let i = 0; i < 28; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const x     = Math.random() * 100;
+      const dur   = (Math.random() * 14 + 8) + 's';
+      const delay = (Math.random() * 16) + 's';
+      const drift = (Math.random() * 60 - 30) + 'px';
+      const col   = colors[Math.floor(Math.random() * colors.length)];
+      p.style.cssText = `left:${x}vw;bottom:0;--dur:${dur};--delay:${delay};--drift:${drift};background:${col};`;
+      container.appendChild(p);
+    }
 
-        // IP Copy Animation
-        function copyIP(element) {
-            navigator.clipboard.writeText('play.towerofbedrock.com');
-            element.classList.add('copied');
-            setTimeout(() => {
-                element.classList.remove('copied');
-            }, 2000);
-        }
+    // ---- COPY IP ----
+    function copyIP() {
+      const ip = 'play.towerofbedrock.com';
+      navigator.clipboard.writeText(ip).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = ip;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      });
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
 
-        // Banner and Navbar Scroll Behavior
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                banner.classList.remove('visible');
-                banner.classList.add('hidden');
-                navbar.classList.add('scrolled');
-                bannerContainer.classList.add('scrolled');
-            } else {
-                banner.classList.remove('hidden');
-                banner.classList.add('visible');
-                navbar.classList.remove('scrolled');
-                bannerContainer.classList.remove('scrolled');
-            }
-        });
+    document.querySelector('.ip-card').addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') copyIP();
+    });
 
-        // Countdown Timers with Slide Animation
-        function startCountdown(elementId, hours, label) {
-            let timeLeft = hours * 3600; // Convert hours to seconds
-            const countdownElement = document.getElementById(elementId);
-            const hoursSpan = countdownElement.querySelector('.hours');
-            const minutesSpan = countdownElement.querySelector('.minutes');
-            const secondsSpan = countdownElement.querySelector('.seconds');
-
-            setInterval(() => {
-                if (timeLeft > 0) {
-                    timeLeft--;
-                    const hoursLeft = Math.floor(timeLeft / 3600);
-                    const minutesLeft = Math.floor((timeLeft % 3600) / 60);
-                    const secondsLeft = timeLeft % 60;
-
-                    // Update and animate only when values change
-                    if (hoursSpan.textContent !== String(hoursLeft).padStart(2, '0')) {
-                        hoursSpan.classList.add('update');
-                        hoursSpan.textContent = String(hoursLeft).padStart(2, '0');
-                        setTimeout(() => hoursSpan.classList.remove('update'), 500);
-                    }
-                    if (minutesSpan.textContent !== String(minutesLeft).padStart(2, '0')) {
-                        minutesSpan.classList.add('update');
-                        minutesSpan.textContent = String(minutesLeft).padStart(2, '0');
-                        setTimeout(() => minutesSpan.classList.remove('update'), 500);
-                    }
-                    if (secondsSpan.textContent !== String(secondsLeft).padStart(2, '0')) {
-                        secondsSpan.classList.add('update');
-                        secondsSpan.textContent = String(secondsLeft).padStart(2, '0');
-                        setTimeout(() => secondsSpan.classList.remove('update'), 500);
-                    }
-                } else {
-                    countdownElement.innerHTML = `${label}: Ended`;
-                }
-            }, 1000);
-        }
-
-        // Start countdowns with demo deadlines
-        startCountdown('double-exp-countdown', 37, 'Ends in');
-        startCountdown('outpost-countdown', 6, 'Starts in');
-        startCountdown('gem-sale-countdown', 48, 'Ends in');
-    </script>
+    // ---- FETCH PLAYER COUNT ----
+    async function fetchPlayers() {
+      try {
+        const res  = await fetch('https://api.mcsrvstat.us/3/play.towerofbedrock.com');
+        const data = await res.json();
+        document.getElementById('playerCount').textContent =
+          (data && data.players) ? (data.players.online ?? '0') : '0';
+      } catch {
+        document.getElementById('playerCount').textContent = '—';
+      }
+    }
+    fetchPlayers();
+    setInterval(fetchPlayers, 60000);
+  </script>
 </body>
-
 </html>
