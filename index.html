@@ -45,8 +45,12 @@
   }
   </script>
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="https://dunb17ur4ymx4.cloudfront.net/webstore/logos/10c53f89bf13b8b6f8467ba23c7d1bb7d942b93d.png" />
+  <!-- Favicons -->
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png" />
+  <link rel="manifest" href="images/site.webmanifest" />
 
   <!-- Press Start 2P = the classic Minecraft-style pixel font -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -510,6 +514,130 @@
       .btn      { font-size: 7px; padding: 11px 14px; }
       .feat-sep { display: none; }
     }
+
+    /* ===================== MOBILE MEDIA QUERIES ===================== */
+
+@media (max-width: 768px) {
+  .corner-px { display: none; }
+
+  .content { padding: 0 16px; }
+
+  .ip-card {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .features {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Keep overflow hidden + centered — just scale content DOWN to fit */
+  body {
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+  }
+
+  .content {
+    padding: 0 14px;
+    gap: 0;
+    width: 100%;
+    /* Scale entire content block to fit viewport height */
+    transform: scale(var(--mobile-scale, 0.85));
+    transform-origin: center center;
+  }
+
+  .logo-img-wrap {
+    margin-bottom: 0;
+  }
+
+  .logo-img-wrap img {
+    width: 88vw;
+    max-width: 340px;
+  }
+
+  .px-divider {
+    margin: 6px 0 10px;
+    max-width: 100%;
+  }
+
+  .tagline {
+    font-size: 6px;
+    line-height: 2.2;
+    margin-bottom: 12px;
+  }
+
+  .ip-card {
+    min-width: unset;
+    width: 100%;
+    padding: 10px 12px;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .ip-address {
+    font-size: 8px;
+    word-break: break-all;
+  }
+
+  .ip-label { font-size: 6px; }
+  .ip-copy-hint { font-size: 5px; }
+
+  .player-count { font-size: 13px; }
+  .player-label { font-size: 5px; }
+
+  /* Buttons: full width stacked */
+  .btn-row {
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 8px;
+    padding: 13px 16px;
+  }
+
+  /* Features: 2x2 grid */
+  .features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    margin-top: 12px;
+    padding: 6px 0;
+  }
+
+  .feat { padding: 8px 6px; gap: 5px; }
+  .feat-val { font-size: 11px; }
+  .feat-name { font-size: 5px; }
+  .feat-sep { display: none; }
+
+  .footer {
+    font-size: 5px;
+    letter-spacing: 0.06em;
+    bottom: 6px;
+    white-space: nowrap;
+  }
+
+  .toast {
+    font-size: 7px;
+    padding: 8px 12px;
+    bottom: 20px;
+  }
+}
+
+@media (max-width: 360px) {
+  .logo-img-wrap img { width: 92vw; }
+  .tagline { font-size: 5.5px; }
+  .ip-address { font-size: 7px; }
+  .btn { font-size: 7px; }
+}
+
   </style>
 </head>
 <body>
@@ -625,7 +753,7 @@
       <a href="https://store.towerofbedrock.com" class="btn btn-store" target="_blank" rel="noopener" aria-label="Open Tower of Bedrock Store">
         &#9733; STORE
       </a>
-      <a href="https://towerofbedrock.com/discord" class="btn btn-discord" target="_blank" rel="noopener" aria-label="Join Tower of Bedrock Discord">
+      <a href="https://www.towerofbedrock.com/discord" class="btn btn-discord" target="_blank" rel="noopener" aria-label="Join Tower of Bedrock Discord">
         &#9670; DISCORD
       </a>
     </div>
@@ -710,6 +838,25 @@
     }
     fetchPlayers();
     setInterval(fetchPlayers, 60000);
+
+    // Auto-scale content to fit short mobile screens
+function scaleMobile() {
+  const content = document.querySelector('.content');
+  if (window.innerWidth <= 480) {
+    const availH = window.innerHeight;
+    const contentH = content.scrollHeight;
+    if (contentH > availH * 0.95) {
+      const scale = (availH * 0.95) / contentH;
+      content.style.setProperty('--mobile-scale', scale.toFixed(3));
+    } else {
+      content.style.setProperty('--mobile-scale', '1');
+    }
+  } else {
+    content.style.removeProperty('--mobile-scale');
+  }
+}
+window.addEventListener('resize', scaleMobile);
+window.addEventListener('load', scaleMobile);
   </script>
 </body>
 </html>
